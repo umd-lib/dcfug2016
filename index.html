@@ -79,6 +79,76 @@
 </section>
 
 <section class="slide">
+    <h2>Fedora as a First Class Service</h2>
+    <ul>
+        <li>Expose the REST API directly</li>
+        <li>Don't treat it as a "black box" dumb storage backend</li>
+        <li>Allow for multiple front-end interfaces</li>
+        <li>Use standards to support a variety of clients and tools</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Challenges to Fedora as a First Class Service</h2>
+    <ul>
+        <li>Authorization must be implemented in the repository</li>
+        <li>URIs we mint must be stable and persistant</li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>URI Stability</h2>
+    <ul>
+        <li>Challenge: URIs we mint must be stable and persistant</li>
+        <li>Challenge++: We will be federating in binaries from the file system,
+        and these binaries may move around</li>
+        <li>Solution:
+            <ul>
+                <li>One persistant tree of URIs (PCDM objects and
+                collections)</li>
+                <li>These persistant URIs then can point to the more mutable
+                URIs in a separate tree (e.g., storage) through the
+                <tt>message/external-body</tt> content type.</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Authentication and Authorization</h2>
+    <ul>
+        <li>Challenge: Authorization must be implemented in the repository</li>
+        <li>Challenge++: We want a mix of public access and authenticated
+        access</li>
+        <li>Solution:
+            <ul>
+                <li>Servlet container authentication using Tomcat</li>
+                <li>Define an admin user with the fedoraAdmin role in
+                tomcat-users.xml</li>
+                <li>Tomcat JNDI authentication realm to use LDAP to authenticate
+                regular users (fedoraUser).</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Authentication and Authorization: Outstanding Challenge</h2>
+    <ul>
+        <li>Challenge++: We want a mix of <strong>public access</strong> and
+        authenticated access</li>
+        <li><del>Solution</del><ins>Workaround</ins>:
+            <ul>
+                <li>Define a "public" or "anonymous" user with the fedoraUser role in
+                tomcat-users.xml</li>
+                <li>Distribute the password for that user.</li>
+                <li>Not ideal; other solutions?</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
 	<h2>Heading</h2>
 	<ul>
 	<li>Bullet Point #1</li>
