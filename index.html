@@ -48,9 +48,18 @@
 <section class="slide">
 	<h2>From local to standard</h2>
 	<ul>
-	<li>UMD has been using locally created schemas (UMDM, UMAM)</li>
-	<li>Fedora 4 gives us the opportunity (and motivation) to get away from local schemas, to more standard ones</li>
-	<li>started with MODS, since it mostly closely matched structure of existing metadata.</li>
+	<li>UMD has been using locally created schemas for years</li>
+	<ul>
+	<li>Descriptive -- UMDM</li>
+	<li>Administrative -- UMAM</li>
+	</ul>
+	<li>Fedora 4 gives us the opportunity (and motivation) to move from local schemas to standards</li>
+	<li>MODS was a clear frontrunner</li>
+	<ul>
+	<li>most closely matched structure of existing metadata</li>
+	<li>widely used</li>
+	</ul>
+	<li>UMDM --> MODS --> MODS RDF --> Fedora4</li>
 	</ul>
 </section>
 <section class="slide">
@@ -62,10 +71,10 @@
 <section class="slide">
 	<h2>Moving from XML to RDF</h2>
 	<ul>
-	<li>we ended up having a problem with MODS RDF</li>
+	<li>MODS RDF in it's current state is problematic for our use</li>
 	<li>need to model the data, not remodel the XML (which is what the current iteration of MODS RDF does)</li>
-	<li>blank nodes created by these hierarchies became problematic</li>
-	<li>we're transitioning from hierarchical structure to flat</li>
+	<li>blank nodes created by these hierarchies became an issue</li>
+	<li>we're transitioning from hierarchical metadata structure to flat</li>
 	</ul>
 </section>
 
