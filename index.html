@@ -88,6 +88,23 @@
 </section>
 
 <section class="slide">
+    <h2>General Implementation Setup</h2>
+    <ul>
+        <li>Currently building from 4.1.1</li>
+        <li>Create an overlay WAR of our custom configuration</li>
+        <li>Include role based access control (fcrepo-module-rbacl)</li>
+        <li>Separately running services for:
+            <ul>
+                <li>Standalone infinispan instance</li>
+                <li>JMS Messaging Consumer (same Tomcat as Fedora)</li>
+                <li>Fuseki (standalone)</li>
+                <li>Solr (remote server)</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
     <h2>Fedora as a First Class Service</h2>
     <ul>
         <li>Expose the REST API directly</li>
@@ -129,16 +146,54 @@
         <li>Challenge: Authorization must be implemented in the repository</li>
         <li>Challenge++: We want a mix of public access and authenticated
         access</li>
-        <li>Solution:
-            <ul>
-                <li>Servlet container authentication using Tomcat</li>
-                <li>Define an admin user with the fedoraAdmin role in
-                tomcat-users.xml</li>
-                <li>Tomcat JNDI authentication realm to use LDAP to authenticate
-                regular users (fedoraUser).</li>
-            </ul>
-        </li>
+        <li>Solution: Authenticate with Tomcat, mix local users with LDAP, set
+        ACL</li>
     </ul>
+</section>
+
+<section class="slide">
+    <h2>Admin User</h2>
+    <ul>
+        <li>Define an admin user with the fedoraAdmin role in
+        tomcat-users.xml</li>
+    </ul>
+    <pre><code>&lt;tomcat-users&gt;
+    &lt;role rolename="fedoraAdmin"/&gt;
+    &lt;role rolename="fedoraUser"/&gt;
+    <strong>&lt;user username="admin" password="SECRET" roles="fedoraAdmin"/&gt;</strong>
+&lt;/tomcat-users&gt;</code></pre>
+</section>
+<section class="slide">
+    <h2>LDAP Authentication with JNDI</h2>
+    <ul>
+        <li><a href="https://tomcat.apache.org/tomcat-7.0-doc/realm-howto.html#JNDIRealm">Tomcat JNDI
+        authentication realm</a> to use LDAP to authenticate regular users (fedoraUser).</li>
+        <li>server.xml</li>
+    </ul>
+    <pre><code>&lt;Engine name="Catalina" defaultHost="localhost"&gt;
+    &lt;!-- ... --&gt;
+    &lt;Realm className="org.apache.catalina.realm.JNDIRealm"
+      connectionURL="ldaps://directory.umd.edu"
+      <strong>commonRole="fedoraUser"</strong>
+      userPattern="uid={0},ou=people,dc=umd,dc=edu"
+      /&gt;
+    &lt;!-- ... --&gt;
+&lt;/Engine&gt;</code></pre>
+</section>
+
+<section class="slide">
+    <h2>Root ACL</h2>
+    <ul>
+        <li>Set an ACL on the root node that grants the "reader" permission to
+        the special principal <tt>EVERYONE</tt></li>
+        <li>Note the double slash in the URL path segment</li>
+    </ul>
+    <pre><code>$ curl https://fedora4dev.lib.umd.edu/fcrepo/rest//fcr:accessroles \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    <strong>-d '{"EVERYONE":["reader"]}' \</strong>
+    -u admin:SECRET
+    </code></pre>
 </section>
 
 <section class="slide">
