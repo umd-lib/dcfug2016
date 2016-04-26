@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=1024, user-scalable=no">
 
-  <title>DC Fedora Users Group, 2015-03-31</title>
+  <title>DC Fedora Users Group, 2016-04-27</title>
 
   <!-- Required stylesheet -->
   <link rel="stylesheet" media="screen" href="core/deck.core.css">
@@ -43,253 +43,42 @@
 
     <!-- Begin slides. Just make elements with a class of slide. -->
 
-  <section class="slide">
-	<h2>Implementing Fedora Four<br>
-	    at the University of Maryland Libraries</h2>
+<section class="slide">
+	<h2>University of Maryland Libraries<br>DC Fedora User Group Update</h2>
 	<h3>Peter Eichman<br>
-	    Bria Parker<br>
 	    Ben Wallberg<br>
 	    Joshua Westgard<br><br>
-	    <em>March 31, 2015</em></h3>
+	    <em>April 27, 2016</em></h3>
   </section>
 
 <section class="slide">
 	<h2>Overview</h2>
-	<h3>Fedora's Past at UMD: Bria Parker</h3>
-	<h3>Fedora's Present at UMD: Peter Eichman</h3>
-	<h3>Fedora's Future at UMD: Josh Westgard</h3>
+	<h3>Architecture Overview (Josh)</h3>
+	<h3>Repository Status (Peter)</h3>
+	<h3>Hydra Status (Ben)</h3>
+  <h3>Hydra/fcrepo Thoughts (Josh)
 </section>
 
 <section class="slide">
-	<h1>Past</h1>
+	<h1>Architecture Overview</h1>
 </section>
 
 <section class="slide">
-	<h2>From local to standard</h2>
-	<ul>
-	<li>UMD has been using locally created schemas for years</li>
-	<ul>
-	<li>Descriptive -- UMDM</li>
-	<li>Administrative -- UMAM</li>
-	</ul>
-	<li>Fedora 4 gives us the opportunity (and motivation) to move from local schemas to standards</li>
-	<li>MODS was a clear frontrunner</li>
-	<ul>
-	<li>most closely matched structure of existing metadata</li>
-	<li>widely used</li>
-	</ul>
-	<li>UMDM --> MODS --> MODS RDF --> Fedora4</li>
-	</ul>
+  <h1>Repository Status</h1>
 </section>
 
 <section class="slide">
-	<img src="img/blank_node.png">
+  <h1>Hydra Status</h1>
 </section>
 
 <section class="slide">
-	<img src="img/blank_node2.png">
-</section>
-
-<section class="slide">
-	<h2>Moving from XML to RDF</h2>
-	<ul>
-	<li>MODS RDF in its current state is problematic for our use</li>
-	<li>need to model the data, not remodel the XML (which is what the current iteration of MODS RDF does)</li>
-	<li>blank nodes created by these hierarchies became an issue</li>
-	<li>we're transitioning from hierarchical metadata structure to flat</li>
-	</ul>
-</section>
-
-<section class="slide">
-	<h1>Present</h1>
-</section>
-
-<section class="slide">
-    <h2>General Implementation Setup</h2>
-    <ul>
-        <li>Currently building from 4.1.1</li>
-        <li>Create an overlay WAR of our custom configuration</li>
-        <li>Include role based access control (fcrepo-module-rbacl)</li>
-        <li>Separately running services for:
-            <ul>
-                <li>Standalone infinispan instance</li>
-                <li>JMS Messaging Consumer (same Tomcat as Fedora)</li>
-                <li>Fuseki (standalone)</li>
-                <li>Solr (remote server)</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>Fedora as a First Class Service</h2>
-    <ul>
-        <li>Expose the REST API directly</li>
-        <li>Don't treat it as a "black box" dumb storage backend</li>
-        <li>Allow for multiple front-end interfaces</li>
-        <li>Use standards to support a variety of clients and tools</li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>Challenges to Fedora as a First Class Service</h2>
-    <ul>
-        <li>Authorization must be implemented in the repository</li>
-        <li>URIs we mint must be stable and persistant</li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>URI Stability</h2>
-    <ul>
-        <li>Challenge: URIs we mint must be stable and persistant</li>
-        <li>Challenge++: We will be federating in binaries from the file system,
-        and these binaries may move around</li>
-        <li>Solution:
-            <ul>
-                <li>One persistant tree of URIs (PCDM objects and
-                collections)</li>
-                <li>These persistant URIs then can point to the more mutable
-                URIs in a separate tree (e.g., storage) through the
-                <tt>message/external-body</tt> content type.</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>Authentication and Authorization</h2>
-    <ul>
-        <li>Challenge: Authorization must be implemented in the repository</li>
-        <li>Challenge++: We want a mix of public access and authenticated
-        access</li>
-        <li>Solution: Authenticate with Tomcat, mix local users with LDAP, set
-        ACL</li>
-    </ul>
-</section>
-
-<section class="slide">
-    <h2>Admin User</h2>
-    <ul>
-        <li>Define an admin user with the fedoraAdmin role in
-        tomcat-users.xml</li>
-    </ul>
-    <pre><code>&lt;tomcat-users&gt;
-    &lt;role rolename="fedoraAdmin"/&gt;
-    &lt;role rolename="fedoraUser"/&gt;
-    <strong>&lt;user username="admin" password="SECRET" roles="fedoraAdmin"/&gt;</strong>
-&lt;/tomcat-users&gt;</code></pre>
-</section>
-<section class="slide">
-    <h2>LDAP Authentication with JNDI</h2>
-    <ul>
-        <li>Tomcat JNDI authentication realm to use LDAP to authenticate regular
-        users (fedoraUser).</li>
-        <li>server.xml</li>
-    </ul>
-    <pre><code>&lt;Engine name="Catalina" defaultHost="localhost"&gt;
-    &lt;!-- ... --&gt;
-    &lt;Realm className="org.apache.catalina.realm.JNDIRealm"
-      connectionURL="ldaps://directory.umd.edu"
-      <strong>commonRole="fedoraUser"</strong>
-      userPattern="uid={0},ou=people,dc=umd,dc=edu"
-      /&gt;
-    &lt;!-- ... --&gt;
-&lt;/Engine&gt;</code></pre>
-</section>
-
-<section class="slide">
-    <h2>Root ACL</h2>
-    <ul>
-        <li>Set an ACL on the root node that grants the "reader" permission to
-        the special principal <tt>EVERYONE</tt></li>
-        <li>Note the double slash in the URL path segment</li>
-    </ul>
-    <pre><code>$ curl https://fedora4dev.lib.umd.edu/fcrepo/rest//fcr:accessroles \
-    -X POST \
-    -H 'Content-Type: application/json' \
-    <strong>-d '{"EVERYONE":["reader"]}' \</strong>
-    -u admin:SECRET
-    </code></pre>
-</section>
-
-<section class="slide">
-    <h2>Authentication and Authorization: Outstanding Challenge</h2>
-    <ul>
-        <li>Challenge++: We want a mix of <strong>public access</strong> and
-        authenticated access</li>
-        <li><del>Solution</del><ins>Workaround</ins>:
-            <ul>
-                <li>Define a "public" or "anonymous" user with the fedoraUser role in
-                tomcat-users.xml</li>
-                <li>Distribute the password for that user.</li>
-                <li>Not ideal; other solutions?</li>
-            </ul>
-        </li>
-    </ul>
-</section>
-
-<section class="slide">
-	<h1>Future</h1>
-</section>
-
-<section class="slide">
-	<h2>Content Types</h2>
-	<ul>
-	<li>Image (visual content)</li>
-	<li>Book (both manuscript and print)</li>
-	<li>Audio/Video (streaming services via external application)</li>
-	<li>Our implementation of Fedora has at times become a hindrance with respect to adding new content types (chain of dependencies)</li>
-	</ul>
-</section>
-
-<section class="slide">
-	<h2>Portland Common Data Model</h2>
-	<ul>
-	<li>Should work well for existing content</li>
-	<li>Adoption is in keeping with our goals of:
-	    <ul>
-	    <li>leveraging standards</li>
-	    <li>community-based development</li>
-	    </ul></li>
-	<li>Allows us to begin the modeling process while deferring commitment on Hydra/Islandora question</li>
-	</ul>
-</section>
-
-<section class="slide">
-	<h2>Research Data and Institutional Repository</h2>
-	<ul>
-	<li>Currently piloting "DRUM for data" (DRUM = Dspace)</li>
-	<li>Is Fedora better suited to be our research data repository?</li>
-	<li>Ultimately, can we replace Dspace with Fedora as our IR?</li>
-	</ul>
-</section>
-
-<section class="slide">
-	<h2>Born-Digital Archives</h2>
-	<ul>
-	<li>Currently in the early stages of active Born-Digital archiving program</li>
-	<li>Access is, for us, a great unanswered question with respect to Born-Digital materials</li>
-	<li>Through the iSchool, UMD is a partner in Brown Dog project (http://browndog.ncsa.illinois.edu)</li>
-	<li>The file system federation features of F4 seem to have potential here</li>
-	</ul>
-</section>
-
-<section class="slide">
-	<h2>A More Complete Digital Asset Management System</h2>
-	<ul>
-	<li>Curator-mediated batch loading with validation tools</li>
-	<li>Flexible, automated fixity checking and auditing</li>
-	<li>Management and tracking of multiple instances of single assets</li>
-	<li>A suite of backend storage options with derivative generation, asset replication, and shipment to storage facilitated by F4</li>
-	</ul>
+  <h1>Hydra/fcrepo Thoughts</h1>
 </section>
 
 <section class="slide">
 	<h2>Thank you!</h2>
 	    <h3>Peter Eichman (peichman@umd.edu)<br>
-	    Bria Parker (blparker@umd.edu)<br>
-	    Ben Wallberg (wallberg@umd.edu)<br>
+		  Ben Wallberg (wallberg@umd.edu)<br>
 	    Joshua Westgard (westgard@umd.edu)</h3>
 </section>
 
