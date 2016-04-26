@@ -1,86 +1,193 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=1024, user-scalable=no">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=1024, user-scalable=no">
 
-  <title>DC Fedora Users Group, 2016-04-27</title>
+<title>DC Fedora Users Group, 2016-04-27</title>
 
-  <!-- Required stylesheet -->
-  <link rel="stylesheet" media="screen" href="core/deck.core.css">
+<!-- Required stylesheet -->
+<link rel="stylesheet" media="screen" href="core/deck.core.css">
 
-  <!-- Extension CSS files go here. Remove or add as needed. -->
-  <link rel="stylesheet" media="screen" href="extensions/goto/deck.goto.css">
-  <link rel="stylesheet" media="screen" href="extensions/menu/deck.menu.css">
-  <link rel="stylesheet" media="screen" href="extensions/navigation/deck.navigation.css">
-  <link rel="stylesheet" media="screen" href="extensions/status/deck.status.css">
-  <link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
+<!-- Extension CSS files go here. Remove or add as needed. -->
+<link rel="stylesheet" media="screen" href="extensions/goto/deck.goto.css">
+<link rel="stylesheet" media="screen" href="extensions/menu/deck.menu.css">
+<link rel="stylesheet" media="screen" href="extensions/navigation/deck.navigation.css">
+<link rel="stylesheet" media="screen" href="extensions/status/deck.status.css">
+<link rel="stylesheet" media="screen" href="extensions/scale/deck.scale.css">
 
-  <!-- Style theme. More available in /themes/style/ or create your own. -->
-  <link rel="stylesheet" href="themes/style/swiss.css">
-	
-  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
-  <link rel="stylesheet" media="screen" href="themes/transition/horizontal-slide.css">
+<!-- Style theme. More available in /themes/style/ or create your own. -->
+<link rel="stylesheet" href="themes/style/swiss.css">
 
-  <!-- Basic black and white print styles -->
-  <link rel="stylesheet" media="print" href="core/print.css">
+<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+<link rel="stylesheet" media="screen" href="themes/transition/horizontal-slide.css">
 
-  <!-- Required Modernizr file -->
-  <script src="modernizr.custom.js"></script>
+<!-- Basic black and white print styles -->
+<link rel="stylesheet" media="print" href="core/print.css">
+
+<!-- Required Modernizr file -->
+<script src="modernizr.custom.js"></script>
 </head>
 <body>
-  
-  <div style="background-color: #888">
-    <a href="http://www.lib.umd.edu/">
-      <img alt="University of Maryland Libraries"
-        src="http://www.lib.umd.edu/images/wrapper/liblogo.png"
-        style="padding: 5px">
-    </a>
-  </div>
-  
-  <div class="deck-container">
 
-    <!-- Begin slides. Just make elements with a class of slide. -->
+<div style="background-color: #888">
+  <a href="http://www.lib.umd.edu/">
+    <img alt="University of Maryland Libraries"
+    src="http://www.lib.umd.edu/images/wrapper/liblogo.png"
+    style="padding: 5px">
+  </a>
+</div>
 
-<section class="slide">
-	<h2>University of Maryland Libraries<br>DC Fedora User Group Update</h2>
-	<h3>Peter Eichman<br>
-	    Ben Wallberg<br>
-	    Joshua Westgard<br><br>
-	    <em>April 27, 2016</em></h3>
+<div class="deck-container">
+
+  <!-- Begin slides. Just make elements with a class of slide. -->
+
+  <section class="slide">
+    <h2>University of Maryland Libraries<br>DC Fedora User Group Update</h2>
+    <h3>Peter Eichman<br>
+      Ben Wallberg<br>
+      Joshua Westgard<br><br>
+      <em>April 27, 2016</em></h3>
   </section>
 
-<section class="slide">
-	<h2>Overview</h2>
-	<h3>Architecture Overview (Josh)</h3>
-	<h3>Repository Status (Peter)</h3>
-	<h3>Hydra Status (Ben)</h3>
-  <h3>Hydra/fcrepo Thoughts (Josh)
-</section>
+  <section class="slide">
+    <h2>Overview</h2>
+    <h3>Architecture Overview (Josh)</h3>
+    <h3>Repository Status (Peter)</h3>
+    <h3>Hydra Status (Ben)</h3>
+    <h3>Hydra/fcrepo Thoughts (Josh)
+    </section>
 
-<section class="slide">
-	<h1>Architecture Overview</h1>
-</section>
+    <section class="slide">
+      <h1>Architecture Overview</h1>
+    </section>
 
-<section class="slide">
-  <h1>Repository Status</h1>
-</section>
+    <section class="slide">
+      <h1>Repository Status</h1>
+    </section>
 
-<section class="slide">
-  <h1>Hydra Status</h1>
-</section>
+    <section class="slide">
+      <h2>Development Server</h2>
+      <ul>
+        <li>Fedora 4.5.0
+        <ul>
+          <li>WebAC</li>
+          <li>Internal Audit Service</li>
+        </ul>
+        </li>
+        <li>Supporting stack
+        <ul>
+          <li>Apache</li>
+          <li>Tomcat</li>
+          <li>Karaf</li>
+          <li>Fuseki</li>
+          <li>Solr</li>
+        </ul>
+        </li>
+        <li>Customized Authentication</li>
+      </ul>
+    </section>
 
-<section class="slide">
-  <h1>Hydra/fcrepo Thoughts</h1>
-</section>
+    <section class="slide">
+      <h2>Authentication</h2>
+      <ul>
+        <li>No authentication required
+        <ul>
+          <li>No authentication challenges from Tomcat</li>
+          <li>Let Fedora allow/deny access to anonymous users</li>
+          <li>Requires customized web.xml</li>
+        </ul>
+        </li>
+        <li>Custom authentication with Tomcat
+        <ul>
+          <li>Allow pre-emptive authentication for clients
+          <ul>
+            <li>HTTP Basic</li>
+            <li>Client certificates</li>
+          </ul>
+          </li>
+          <li>Interactive authentication for Fedora REST UI</li>
+        </ul>
+        </li>
+      </ul>
+    </section>
 
-<section class="slide">
-	<h2>Thank you!</h2>
-	    <h3>Peter Eichman (peichman@umd.edu)<br>
-		  Ben Wallberg (wallberg@umd.edu)<br>
-	    Joshua Westgard (westgard@umd.edu)</h3>
-</section>
+    <section class="slide">
+      <h2>Pre-emptive Authentication</h2>
+      <ul>
+        <li>Implemented with Tomcat Valves</li>
+        <li>
+        <a href="https://github.com/umd-lib/optional-authn-valve">https://github.com/umd-lib/optional-authn-valve</a>
+        <ul>
+          <li>OptionalBasicAuthenticator</li>
+          <li>OptionalSSLAuthenticator</li>
+        </ul>
+        </li>
+        <li>Injects a user principal into the request</li>
+        <li>No credentials = no user principal
+        <ul>
+          <li>Fedora still sees requests with no user principal</li>
+        </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Pre-emptive Authentication</h2>
+      <img src="img/preemptive_authnz.png"/>
+    </section>
+
+    <section class="slide">
+      <h2>Interactive Authentication</h2>
+      <ul>
+        <li>Tomcat Single Sign On (SSO) Valve</li>
+        <li>User login webapp
+        <ul>
+          <li>Authenticates using Tomcat's Realms (LDAP, tomcat-users.xml, etc.)</li>
+          <li>Creates SSO session that Fedora can read</li>
+        </ul>
+        </li>
+        <li><a href="https://github.com/umd-lib/fcrepo-user-webapp">https://github.com/umd-lib/fcrepo-user-webapp</a></li>
+      </ul>
+    </section>
+    
+    <section class="slide">
+      <h2>Interactive Authentication</h2>
+      <img src="img/interactive_authnz.png"/>
+    </section>
+
+    <section class="slide">
+      <h2>Authorization</h2>
+      <ul>
+        <li>WebAC</li>
+        <li>Collection for ACLs</li>
+        <li>Collection for groups ("Agent Classes")</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Milestones</h2>
+      <ul>
+        <li>Staging Server: May 2016</li>
+        <li>Production Server: July 2016</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h1>Hydra Status</h1>
+    </section>
+
+    <section class="slide">
+      <h1>Hydra/fcrepo Thoughts</h1>
+    </section>
+
+    <section class="slide">
+      <h2>Thank you!</h2>
+      <h3>Peter Eichman (peichman@umd.edu)<br>
+        Ben Wallberg (wallberg@umd.edu)<br>
+        Joshua Westgard (westgard@umd.edu)</h3>
+    </section>
 
     <!-- End slides. -->
 
@@ -94,9 +201,9 @@
 
     <!-- deck.status snippet -->
     <p class="deck-status" aria-role="status">
-      <span class="deck-status-current"></span>
-      /
-      <span class="deck-status-total"></span>
+    <span class="deck-status-current"></span>
+    /
+    <span class="deck-status-total"></span>
     </p>
 
     <!-- deck.goto snippet -->
@@ -110,22 +217,22 @@
     <!-- End extension snippets. -->
   </div>
 
-<!-- Required JS files. -->
-<script src="jquery.min.js"></script>
-<script src="core/deck.core.js"></script>
+  <!-- Required JS files. -->
+  <script src="jquery.min.js"></script>
+  <script src="core/deck.core.js"></script>
 
-<!-- Extension JS files. Add or remove as needed. -->
-<script src="extensions/menu/deck.menu.js"></script>
-<script src="extensions/goto/deck.goto.js"></script>
-<script src="extensions/status/deck.status.js"></script>
-<script src="extensions/navigation/deck.navigation.js"></script>
-<script src="extensions/scale/deck.scale.js"></script>
+  <!-- Extension JS files. Add or remove as needed. -->
+  <script src="extensions/menu/deck.menu.js"></script>
+  <script src="extensions/goto/deck.goto.js"></script>
+  <script src="extensions/status/deck.status.js"></script>
+  <script src="extensions/navigation/deck.navigation.js"></script>
+  <script src="extensions/scale/deck.scale.js"></script>
 
-<!-- Initialize the deck. You can put this in an external file if desired. -->
-<script>
-  $(function() {
+  <!-- Initialize the deck. You can put this in an external file if desired. -->
+  <script>
+$(function() {
     $.deck('.slide');
-  });
-</script>
-</body>
-</html>
+    });
+  </script>
+  </body>
+  </html>
